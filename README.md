@@ -11,5 +11,5 @@ basic tree structures
 
 ## Current Languages Implemented:   
 * GO
-* 
+
 # Please share feedback and make any pull requests or comments on recommendations.
