@@ -12,6 +12,7 @@ basic tree structures
 ## ***More updates coming soon to this repository:*** ###  
 * user interface
 * more BT funcs
+* custom data structure packages
 ## Current Languages Implemented:   
 * GO
 
