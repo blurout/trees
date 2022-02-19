@@ -12,21 +12,14 @@ type node struct {
 }
 
 func main() {
-	root := &node{val: 50}
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	root.Insert(Randomint())
-	fmt.Print(root.Search(15))
+	root := &node{val: 0}
+	root.Insert(1)
+	root.Insert(2)
+	root.Insert(3)
+	root.Insert(4)
+	root.Insert(5)
+	root.Insert(6)
+	print_in_order(root)
 }
 
 func (n *node) Insert (data int) {
@@ -63,4 +56,41 @@ func Randomint() int {
 	num := 0
 	num += rand.Intn(100)
 	return num
+}
+
+func search_BST(root *node, val int) bool {
+    if root == nil {
+        return false
+    } else if val > root.val {
+        return search_BST(root.right, val)
+    } else if val < root.val {
+        return search_BST(root.left, val)
+    }
+    return true
+}
+
+func invert_tree(root *node) *node {
+	if root == nil {
+		return nil
+	}
+	tmp := root.left
+	root.left = invert_tree(root.right)
+	root.right = invert_tree(tmp)
+	return root
+}
+
+func print_in_order (root *node) {
+	arr:= []int{}
+	helper(root, &arr)
+	for i := 0; i < len(arr); i++ {
+		fmt.Println(arr[i])
+	}
+}
+func helper(root *node, arr *[]int) {
+	if root == nil {
+		return
+	}
+	helper(root.left, arr)
+	*arr = append(*arr, root.val)
+	helper(root.right, arr)
 }
