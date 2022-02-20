@@ -12,14 +12,9 @@ type node struct {
 }
 
 func main() {
-	root := &node{val: 0}
-	root.Insert(1)
-	root.Insert(2)
-	root.Insert(3)
-	root.Insert(4)
-	root.Insert(5)
-	root.Insert(6)
-	print_in_order(root)
+	tree := &node{val: 0}
+	print_in_order(tree)
+	fmt.Println(Is_Tree_Symmetrical(tree.left, tree.right))
 }
 
 func (n *node) Insert (data int) {
@@ -81,16 +76,36 @@ func invert_tree(root *node) *node {
 
 func print_in_order (root *node) {
 	arr:= []int{}
-	helper(root, &arr)
+	print_in_order_helper(root, &arr)
 	for i := 0; i < len(arr); i++ {
 		fmt.Println(arr[i])
 	}
 }
-func helper(root *node, arr *[]int) {
+func print_in_order_helper(root *node, arr *[]int) {
 	if root == nil {
 		return
 	}
-	helper(root.left, arr)
+	print_in_order_helper(root.left, arr)
 	*arr = append(*arr, root.val)
-	helper(root.right, arr)
+	print_in_order_helper(root.right, arr)
 }
+
+func Is_Tree_Symmetrical(left_side *node, right_side *node) bool {
+    if (left_side == nil || right_side == nil ) {
+        return left_side == right_side
+    }
+    if (left_side.val != right_side.val) {
+        return false
+    }
+    return Is_Tree_Symmetrical(left_side.left, left_side.right) && Is_Tree_Symmetrical(left_side.right, right_side.left)
+}
+
+func Are_Trees_Symmetrical(tree1 *node, tree2 *node) bool {
+    if tree1.val != tree2.val {
+		return false
+	}
+	bool1 := Is_Tree_Symmetrical(tree1.left, tree1.right)
+	bool2 := Is_Tree_Symmetrical(tree2.left, tree2.right)
+    return bool1 && bool2
+}
+
