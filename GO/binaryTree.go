@@ -109,3 +109,15 @@ func Are_Trees_Symmetrical(tree1 *node, tree2 *node) bool {
     return bool1 && bool2
 }
 
+func Sum_Of_Left_Leaves(root *node) int {
+	if root == nil {
+		return 0
+	}
+	sum := 0
+	left := root.left
+	if (left != nil && left.left == nil && left.right == nil) {
+		sum += left.val
+	}
+	return sum + Sum_Of_Left_Leaves(root.left) + Sum_Of_Left_Leaves(root.right)
+}
+
