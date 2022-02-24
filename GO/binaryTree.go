@@ -13,6 +13,7 @@ type node struct {
 
 func main() {
 	tree := &node{val: 3}
+	fmt.Println(tree)
 	tree.Insert(2)
 	tree.right = &node{val: 2}
 	tree2 := &node{val: 3}
