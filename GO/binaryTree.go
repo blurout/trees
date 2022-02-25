@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+	"math"
 )
+
 type node struct {
 	val   int
 	left  *node
@@ -12,17 +14,14 @@ type node struct {
 }
 
 func main() {
-	tree := &node{val: 3}
-	fmt.Println(tree)
-	tree.Insert(2)
-	tree.right = &node{val: 2}
-	tree2 := &node{val: 3}
-	tree.Insert(2)
-	tree.right = &node{val: 5}
+	tree := &node{val: 5}
+	tree.left = &node{val: 4}
+	tree.right = &node{val: 6}
+	tree.left.left = &node{val: 3}
+	tree.right.right = &node{val: 7}
 	Valid_BST(tree)
 	print_in_order(tree)
-	Is_Tree_Symmetrical(tree.left, tree.right)
-	Are_Trees_Symmetrical(tree, tree2)
+	fmt.Print(deepestLeavesSum(tree))
 }
 
 func (n *node) Insert (data int) {
@@ -55,12 +54,12 @@ func (n *node) Search (data int) bool {
 }
 
 func Randomint() int {
-	arr := [10]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,}
+	arr := [10]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
     x := rand.NewSource(time.Now().UnixNano())
     y := rand.New(x)
-    rand.Shuffle(len(arr), func(i, j int) {
-        arr[i], arr[j] = arr[j], arr[i]
-    })
+    rand.Shuffle(len(arr), func(i, j int) { 
+		arr[i], arr[j] = arr[j], arr[i] 
+	} )
 	return arr[y.Intn(10)]
 }
 
@@ -154,6 +153,7 @@ func Valid_BST(root *node) {
 		fmt.Println("The Tree is not a Valid BST")
 	}
 }
+
 func Valid_BST_Helper(low, high, root *node) bool {
     if root == nil {
         return true
@@ -165,4 +165,43 @@ func Valid_BST_Helper(low, high, root *node) bool {
         return false
     }
     return Valid_BST_Helper(low, root, root.left) && Valid_BST_Helper(root, high, root.right)
+}
+
+func deepestLeavesSum(root *node) int {
+    var ans int
+    var max_depth int
+    var current_level int
+    max_depth = Find_Max_Depth(root)
+    current_level = 0
+    ans = Sum_Of_Deepest_Leaves(root, max_depth, current_level)
+    return ans
+}
+
+func Find_Max_Depth(root *node) int {
+    var left_height int
+    var right_height int
+    if root == nil {
+        return -1
+    }
+    left_height = Find_Max_Depth(root.left)
+    right_height = Find_Max_Depth(root.right)
+    return int(math.Max(float64(left_height), float64(right_height))) + 1
+}
+
+func Sum_Of_Deepest_Leaves(root *node, max_level int, current_level int) int {
+    var left_sum int
+    var right_sum int
+    left_sum = 0
+    right_sum = 0
+    if root == nil {
+        return 0
+    }
+    if current_level == max_level {
+        return root.val
+    }
+    if current_level != max_level {
+        left_sum = Sum_Of_Deepest_Leaves(root.left, max_level, current_level+1)
+        right_sum = Sum_Of_Deepest_Leaves(root.right, max_level, current_level+1)
+    }
+    return left_sum + right_sum
 }
