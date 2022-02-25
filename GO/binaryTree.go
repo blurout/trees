@@ -55,10 +55,13 @@ func (n *node) Search (data int) bool {
 }
 
 func Randomint() int {
-	rand.Seed(time.Now().UnixNano())
-	num := 0
-	num += rand.Intn(10)
-	return num
+	arr := [10]int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,}
+    x := rand.NewSource(time.Now().UnixNano())
+    y := rand.New(x)
+    rand.Shuffle(len(arr), func(i, j int) {
+        arr[i], arr[j] = arr[j], arr[i]
+    })
+	return arr[y.Intn(10)]
 }
 
 func search_BST(root *node, val int) bool {
